@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200&family=Montserrat:wght@600&display=swap');
+$inco :'Inconsolata', monospace;
+$mont :'Montserrat', sans-serif;
+body,h1,h2,h3,h4,h5,p{
+    margin: 0;
+}
+button:hover{
+    background-color: transparent;
+    cursor: pointer;
+}
