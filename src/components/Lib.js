@@ -8,12 +8,11 @@ class Lib extends Component {
     }
 
 
-    expandHome = t => {
-        if (t) {
-            console.log("ciao");
-            return null
+    expandHome = stateInput => {
+        if(stateInput){     
+            const box = document.querySelector(".home-lib-box")
+            box.style.animation = "openBox "
         }
-        return null
     }
 
 
@@ -22,7 +21,7 @@ class Lib extends Component {
     render() {
         return (
             <>
-                <Home xdt={this.expandHome}></Home>
+                <Home openHome={this.expandHome}></Home>
                 <div className="home-lib">
                     <button type="submit">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
