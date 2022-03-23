@@ -13,8 +13,7 @@ class Home extends Component {
   }
   render() {
     return (
-      
-      <div className="home-box">
+      <div className="container home-box">
         <form className="home-box-form">
           <h1 className="home-box-form-title">Scegli il libro più adatto a te</h1>
           <div className="home-box-form-input">

@@ -1,0 +1,51 @@
+.home {
+    width: 100%;
+    height: 100vh;
+
+    background-image: url("./../image/libreria.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    &-nav {
+        width: 100%;
+        height: 50%;
+        //    background-color: red;
+        .home-nav-input {
+            outline: none;
+        }
+        button {
+            color: rgba(black, 0.5);
+        }
+    }
+    &-search {
+        width: 100%;
+        height: 50%;
+        &-box {
+            overflow-y: auto !important;
+            overflow-x: hidden;
+            width: 80%;
+            height: 100%;
+            background-color: white;
+            &-page {
+                width: 80%;
+                height: 80%;
+            }
+        }
+        .home-search-box-desc {
+            height: 10px;
+            text-overflow: ellipsis;
+        }
+    }
+}
+.fs-mont {
+    font-family: $mont;
+}
+.fs-inco {
+    font-family: $inco;
+}
+.text-black{
+    color: black;
+}
+.text-black:hover{
+    color: black;
+}

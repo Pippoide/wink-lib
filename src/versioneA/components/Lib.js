@@ -11,7 +11,7 @@ class Lib extends Component {
     expandHome = stateInput => {
         if(stateInput){     
             const box = document.querySelector(".home-lib-box")
-            box.style.animation = "openBox "
+            box.style.animation = "openBox 1s fowards"
         }
     }
 
