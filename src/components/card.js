@@ -6,16 +6,15 @@ class Card extends Component {
     render() {
         return (
             <div className="col p-4">
-            <div className="card">
-                <img src={img} className="card-img-top" alt="..."></img>
+            <a className="card text-black text-decoration-none" target="_blank" href={this.props.link}>
+                <img src={this.props.img} className="card-img-top" alt="..."></img>
                 <div className="card-body rounded-pill">
-                    <h5 className="card-title text-capitalize">titolo</h5>
+                    <h5 className="card-title text-capitalize">{this.props.titolo}</h5>
                     <p className="word-break card-text">
-                        Lorem ipsum dolor sit amet consectetur
-                        adipisicing elit. Doloribus temporibus
+                        {this.props.descrizione}
                     </p>
                 </div>
-            </div>  
+            </a>  
         </div>
         );
     }
