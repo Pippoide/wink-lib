@@ -49,28 +49,51 @@ class App extends Component {
         this.setState({ indexPage: 0 })
         var x = 40 / view;
         x = x.toFixed()
+        x = parseInt(x)
         this.setState({ pageMax: x });
         this.checkBook(this.state.ricerca);
     }
     setPageIndex = (index) => {
         //-1 = commando di pagina indientro
         //-2 = commando di pagina avanti
-        if (this.state.viewMaxBook = 15) {
-            if(index==2){
-                this.setState({indexPage:15})
+        //viewMaxBook viente trattato in modo particolare perchè 40 (max libri restituiti da Google API Book) / 15 = 2.6 perciò non può essere gestita in modo dinamico diversamente dalle altre pagine
+        if (this.state.viewMaxBook == 15) {
+            if (index == -1) {
+                if (this.state.indexPage > 0) {
+                    this.setState({ indexPage: (this.state.indexPage - 15) })
+                }
             }
-            else{
-                if(index==3){
-                    this.setState({indexPage:30})
-                }
-                else{
-                    var startIndexView = (index * this.state.viewMaxBook)
-                    if (startIndexView >= 39) {
-                        startIndexView -= this.state.viewMaxBook
+            else {
+                if (index == -2) {
+                    console.log(this.state.indexPage)
+                    console.log(this.state.indexPage>this.state.pageMax)
+                    if ((this.state.indexPage+15)>40) {
+                        global.alert("non ci sono altri elementi")
                     }
-                    this.setState({ indexPage: startIndexView })
+                    else {
+                        this.setState({ indexPage: (this.state.indexPage + 15) })
+                    }
                 }
-        }
+                else {
+                    if (index == 2) {
+                        this.setState({ indexPage: 15 })
+                    }
+                    else {
+                        if (index == 3) {
+                            this.setState({ indexPage: 30 })
+                        }
+                        else {
+                            //per index == 1
+                            var startIndexView = (index * this.state.viewMaxBook)
+                            if (startIndexView >= 39) {
+                                startIndexView -= this.state.viewMaxBook
+                            }
+                            this.setState({ indexPage: startIndexView })
+                        }
+                    }
+
+                }
+            }
         }
         else {
             switch (index) {
@@ -85,6 +108,7 @@ class App extends Component {
                     break;
                 case -2:
                     var x = this.state.indexPage + this.state.viewMaxBook;
+                    console.log(x)
                     if (x >= 39) {
                         global.alert("non ci sono altri risultati diponibili")
                     }
@@ -148,7 +172,7 @@ class App extends Component {
                                     </li>
                                     <li className="page-item"><a className="page-link text-black" onClick={(index) => this.setPageIndex(0)}>1</a></li>
                                     <li className="page-item"><a className="page-link text-black" onClick={(index) => this.setPageIndex(2)}>2</a></li>
-                                    <li className="page-item"><a className="page-link text-black" onClick={(index) => this.setPageIndex((this.state.pageMax))}>{(this.state.pageMax)}</a></li>
+                                    <li className="page-item"><a className="page-link text-black" onClick={(index) => this.setPageIndex(this.state.pageMax)}>ultima pagina</a></li>
                                     <li className="page-item">
                                         <a className="page-link" onClick={(index) => this.setPageIndex(-2)} aria-label="Next">
                                             <span aria-hidden="true" className='text-black'>&raquo;</span>
