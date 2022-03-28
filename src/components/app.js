@@ -8,7 +8,8 @@ class App extends Component {
         ricerca: "",
         card: [],
         pageMax: 8,
-        indexPage: 0
+        indexPage: 0,
+        inputOpen : false
     }
 
     checkBook = (ricerca) => {
@@ -30,7 +31,7 @@ class App extends Component {
                 }
                 if (response.data.items[i].volumeInfo.imageLinks == undefined) {
                     //.imagelink e non thumbnail - link a una foto generica nera con scitta "copertina non disponibile"
-                    imgCheck = "https://tse4.mm.bing.net/th?id=OIP.Uz90XEacgDw13H3pTwoA5AAAAA&w=690&c=7&pid=Api&p=0"
+                    imgCheck = "https://books.google.it/googlebooks/images/no_cover_thumb.gif"
                 }
                 else{
                     imgCheck = response.data.items[i].volumeInfo.imageLinks.thumbnail
@@ -136,20 +137,23 @@ class App extends Component {
         }
         this.checkBook(this.state.ricerca)
     }
+    openHomeSearch = (x) =>{
+        this.setState({inputOpen:true})
+    }
     render() {
         return (
-            <div className='home d-flex flex-column p-0 m-0'>
-                <div className="home-nav d-flex flex-column justify-content-center align-items-center">
+            <div className='home position-relative d-flex flex-column flex-direction-column p-0 m-0'>
+                <div className={this.state.inputOpen ? "home-nav h-50 d-flex flex-column justify-content-center align-items-center":"home-nav h-100 d-flex flex-column justify-content-center align-items-center"}>
                     <nav className="navbar navbar-light p-0">
                         <div className=" container-fluid p-0 flex-column">
                             <p className="h1 text-light fs-1 fw-bold mb-3 text-center">Cerca un libro tramite l'API di Google Book</p>
                             <div className="d-flex flex-row align-items-center pt-3">
-                                <input onChange={(event) => this.giveInputValue(event)} className="home-nav-input d-flex text-center border-0 py-2 px-5 mx-2 fs-6 rounded-pill" type="search" placeholder="cerca il titolo del libro" aria-label="Search"></input>
+                                <input onClick={()=>this.openHomeSearch(true)} onChange={(event) => this.giveInputValue(event)} className="home-nav-input d-flex text-center border-0 py-2 px-5 mx-2 fs-6 rounded-3" type="search" placeholder="inserisci il titolo del libro" aria-label="Search"></input>
                             </div>
                         </div>
                     </nav>
                 </div>
-                <div className="home-search container-sm d-flex flex-column align-items-center">
+                <div className={this.state.inputOpen ? 'open-homesearch home-search position-absolute container-sm d-flex flex-column align-items-center':'home-search position-absolute container-sm d-flex flex-column align-items-center'} >
                     <div className="home-search-box rounded-top d-flex flex-column justify-content-between">
                         <div className='row row-cols-1 row-cols-md-3 m-0 px-5 pt-5 container-sm'>
                             {
@@ -164,10 +168,10 @@ class App extends Component {
                             }
                             <div className="col p-4">
                                 <div className="card flex-column d-flex justify-content-between aling-items-center h-100">
-                                    <button className="h-25 w-auto rounded m-2 p-0 d-flex justify-content-center align-items-center fs-5 bg-light p-2 border-0 w-100" type="submit" onClick={() => this.setViewmax(5)}>lista da 5</button>
-                                    <button className="h-25 w-auto rounded m-2 p-0 d-flex justify-content-center align-items-center fs-5 bg-light p-2 border-0 w-100" type="submit" onClick={() => this.setViewmax(10)}>lista da 10</button>
-                                    <button className="h-25 w-auto rounded m-2 p-0 d-flex justify-content-center align-items-center fs-5 bg-light p-2 border-0 w-100" type="submit" onClick={() => this.setViewmax(15)}>lista da 15</button>
-                                    <button className="h-25 w-auto rounded m-2 p-0 d-flex justify-content-center align-items-center fs-5 bg-light p-2 border-0 w-100" type="submit" onClick={() => this.setViewmax(20)}>lista da 20</button>
+                                    <button className="h-25 w-auto rounded m-2 p-0 d-flex justify-content-center align-items-center fs-6 bg-light p-2 border-0 w-100" type="submit" onClick={() => this.setViewmax(5)}>lista da 5</button>
+                                    <button className="h-25 w-auto rounded m-2 p-0 d-flex justify-content-center align-items-center fs-6 bg-light p-2 border-0 w-100" type="submit" onClick={() => this.setViewmax(10)}>lista da 10</button>
+                                    <button className="h-25 w-auto rounded m-2 p-0 d-flex justify-content-center align-items-center fs-6 bg-light p-2 border-0 w-100" type="submit" onClick={() => this.setViewmax(15)}>lista da 15</button>
+                                    <button className="h-25 w-auto rounded m-2 p-0 d-flex justify-content-center align-items-center fs-6 bg-light p-2 border-0 w-100" type="submit" onClick={() => this.setViewmax(20)}>lista da 20</button>
                                 </div>
                             </div>
                         </div>
