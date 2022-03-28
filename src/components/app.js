@@ -15,22 +15,31 @@ class App extends Component {
         Axios.get("https://www.googleapis.com/books/v1/volumes?q=" + ricerca + "&key=" + process.env.REACT_APP_API_KEY_BOOK + "&maxResults=40").then(response => {
             var cardNull = [];
             this.setState({ card: cardNull })
-            var desc;
+            var descrizioneCheck
+            var imgCheck
             console.log(response.data.items)
             var indexMax = this.state.indexPage + this.state.viewMaxBook
+            if(indexMax>40){indexMax=40}//per evitare bug a causa della lista per 15 che genera indexmax = 45
             console.log(indexMax)
             for (var i = this.state.indexPage; i < indexMax; i++) {
                 if (response.data.items[i].volumeInfo.description == undefined) {
-                    desc = "Descrizione non disponibile";
+                    descrizioneCheck = "Descrizione non disponibile";
                 }
                 else {
-                    desc = response.data.items[i].volumeInfo.description
+                    descrizioneCheck = response.data.items[i].volumeInfo.description
+                }
+                if (response.data.items[i].volumeInfo.imageLinks == undefined) {
+                    //.imagelink e non thumbnail - link a una foto generica nera con scitta "copertina non disponibile"
+                    imgCheck = "https://tse4.mm.bing.net/th?id=OIP.Uz90XEacgDw13H3pTwoA5AAAAA&w=690&c=7&pid=Api&p=0"
+                }
+                else{
+                    imgCheck = response.data.items[i].volumeInfo.imageLinks.thumbnail
                 }
                 const book = {
                     id: i,
                     titolo: response.data.items[i].volumeInfo.title,
-                    descrizione: desc,
-                    img: response.data.items[i].volumeInfo.imageLinks.thumbnail,
+                    descrizione: descrizioneCheck,
+                    img: imgCheck,
                     link: response.data.items[i].volumeInfo.infoLink
                 };
                 this.state.card.push(book);

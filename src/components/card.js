@@ -1,5 +1,4 @@
 import { Component } from "react";
-import img from '../image/libreria.jpg';
 
 class Card extends Component {
 
