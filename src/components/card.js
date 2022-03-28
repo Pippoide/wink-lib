@@ -9,9 +9,9 @@ class Card extends Component {
                 <img src={this.props.img} className="card-img-top" alt="..."></img>
                 <div className="card-body rounded-pill">
                     <h5 className="card-title text-capitalize">{this.props.titolo}</h5>
-                    <p className="card-text " style={{textOverflow:"ellipsis",maxHeight:"100px",overflow:"hidden",whiteSpace:"nowrap"}}>
+                    <div className="linea-capo" style={{textOverflow:"ellipsis",overflow:"hidden"}}>
                         {this.props.descrizione}
-                    </p>
+                    </div>
                 </div>
             </a>  
         </div>

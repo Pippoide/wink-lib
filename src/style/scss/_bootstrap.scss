@@ -33,11 +33,12 @@
                 height: 80%;
             }
         }
-        .home-search-box-desc {
-            height: 10px;
-            text-overflow: ellipsis;
-        }
     }
+}
+.linea-capo{
+    display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 .open-homesearch{
   animation-name: openhomesearch !important;
