@@ -1,0 +1,25 @@
+.mont {
+    font-family: $mont;
+}
+.bg-image{
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url("./../image/libreria.jpg");
+}
+.box-lib-circle{
+    width: 200%;
+    height: 95vh;
+    border-radius: 100% 100% 0 0;
+    background-color: white;
+}
+.box-lib{
+    bottom: -80vh !important;
+}
+.box-lib-button{
+    bottom: -10px !important;
+    padding: .5rem 5rem;
+    cursor:pointer;
+    background-color: white;
+    box-shadow: 0px 3px 6px -1px rgba(0,0,0,.50);
+}
