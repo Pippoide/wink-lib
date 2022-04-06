@@ -66,8 +66,13 @@ input {
   cursor: pointer;
 }
 
+.decoration-none {
+  text-decoration: none;
+}
+
 .block-book {
   height: 90%;
+  overflow-y: auto !important;
 }
 
 .block-card {

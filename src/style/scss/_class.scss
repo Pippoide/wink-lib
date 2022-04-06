@@ -38,8 +38,12 @@
 .cursor-pointer {
     cursor: pointer;
 }
+.decoration-none{
+    text-decoration: none;
+}
 .block-book {
     height: 90%;
+    overflow-y: auto !important;
 }
 .block-card {
     background: #f1f1f1;

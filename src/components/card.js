@@ -1,21 +1,14 @@
+import { render } from "@testing-library/react";
 import { Component } from "react";
-
-class Card extends Component {
-
-    render() {
-        return (
-            <div className="col p-4" style={{minHeight:"300px"}}>
-            <a className="card text-black text-decoration-none h-100" target="_blank" href={this.props.link}>
-                <img src={this.props.img} className="card-img-top" alt="..."></img>
-                <div className="card-body rounded-pill">
-                    <h5 className="card-title text-capitalize">{this.props.titolo}</h5>
-                    <div className="linea-capo" style={{textOverflow:"ellipsis",overflow:"hidden"}}>
-                        {this.props.descrizione}
-                    </div>
-                </div>
-            </a>  
-        </div>
-        );
-    }
+function Card(props) {
+    return(
+        <a href ={props.link} target="_blank" className="decoration-none cursor-pointer col d-flex flex-row align-items-center justify-content-start">
+            <img className="h-75 rounded" src={props.img}></img>
+            <div className="d-flex justify-content-start flex-column mx-2 h-75 text-black">
+                <h1 className="mont fs-3">{props.titolo}</h1>
+                <p className="truncate-row ">{props.descrizione}</p>
+            </div>
+        </a>
+    );
 }
 export default Card

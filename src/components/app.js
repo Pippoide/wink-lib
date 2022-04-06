@@ -1,12 +1,16 @@
 import { Component } from "react";
-//import Card from "./card";
+
+import Card from "./Card";
 import Axios from "axios";
 import React, { useState } from 'react';
+
 
 function App() {
     //https://www.youtube.com/watch?v=cLohXdSPLEM
     const [libStato, SetLibStato] = useState(false); //false = chiuse->aperto | true = aperto->chiuso
-
+    const [libriLista, SetLibriLista] = useState([{}])
+    const [indiceLista, SetIndiceLista] = useState(0) 
+    const [paginazione, SetPaginazione] = useState(0)
     //apertura della ricerca
     function ActionLib() {
         // console.log(libStato)
@@ -24,13 +28,45 @@ function App() {
             document.getElementById("arrow-ft").style.animation = "BottomDirection 1s 1  ease-out forwards";
         }
     }
+    function SearchBook(ricerca) {
+        Axios.get("https://www.googleapis.com/books/v1/volumes?q=" + ricerca + "&key=" + process.env.REACT_APP_API_KEY_BOOK + "&startIndex=0"+"&maxResults=5").then(response => {
+            var descrizione;
+            var imgBook;
+            var libriListaTemporanea=[];
+            for(var i = 0;i<response.data.items.length;i++){
+                if (response.data.items[i].volumeInfo.description == undefined) {
+                    descrizione = "Descrizione non disponibile";
+                }
+                else {
+                    descrizione = response.data.items[i].volumeInfo.description
+                }
+                if (response.data.items[i].volumeInfo.imageLinks == undefined) {
+                    //.imagelink e non thumbnail - link a una foto generica nera con scitta "copertina non disponibile"
+                    imgBook = "https://books.google.it/googlebooks/images/no_cover_thumb.gif"
+                }
+                else{
+                    imgBook = response.data.items[i].volumeInfo.imageLinks.thumbnail
+                }
+                var book = {
+                    id: i,
+                    titolo: response.data.items[i].volumeInfo.title,
+                    descrizione: descrizione,
+                    img: imgBook,
+                    link: response.data.items[i].volumeInfo.infoLink
+                };
+                libriListaTemporanea.push(book)
+            }
+            SetLibriLista(libriListaTemporanea)
+        }
+        )
+    }
 
     return (
         <div className=" position-relative w-100 d-flex flex-column align-items-center bg-image text-white vh-100">
             <div className="d-flex flex-column justify-content-center align-items-center w-75 p-6" style={{ height: "80vh" }}>
                 <h1 className="fs-1 mont text-center">CERCA IL LIBRO ADATTO A TE</h1>
                 <div className="d-flex max flex-column justify-content-center align-items-center mt-3">
-                    <input type="text" className="input-search rounded-pill d-flex text-center border-0 py-2 px-5 mx-2 fs-6" placeholder="Inserisci il titolo"></input>
+                    <input onChange={(event) => SearchBook(event.target.value)} type="text" className="input-search rounded-pill d-flex text-center border-0 py-2 px-5 mx-2 fs-6" placeholder="Inserisci il titolo"></input>
                 </div>
             </div>
             <div className="box-lib position-absolute position-relative d-flex flex-column justify-content-center align-items-center w-100">
@@ -42,56 +78,28 @@ function App() {
                 <div className="box-lib-circle d-flex justify-content-center align-items-center">
                     <div className="w-100 h-100 d-flex justify-content-between align-items-center flex-column">
                         <div className="block-book row row-cols-1 row-cols-md-2 w-100 m-0 p-0">
-                            <div className="cursor-pointer col d-flex flex-row align-items-center justify-content-center">
-                                <img className="h-75 rounded" src="https://books.google.it/googlebooks/images/no_cover_thumb.gif"></img>
-                                <div className="d-flex justify-content-start flex-column mx-2 h-75 text-black">
-                                    <h1 className="mont fs-3">titolo</h1>
-                                    <p className="truncate-row ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima quis quas est dolor ratione, corrupti ex omnis reprehenderit perferendis, laborum repudiandae officiis. Quas voluptas ea repellendus ipsa sunt, quo voluptatum.
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="cursor-pointer col d-flex flex-row align-items-center justify-content-center">
-                                <img className="h-75 rounded" src="https://books.google.it/googlebooks/images/no_cover_thumb.gif"></img>
-                                <div className="d-flex justify-content-start flex-column mx-2 h-75 text-black">
-                                    <h1 className="mont fs-3">titolo</h1>
-                                    <p className="truncate-row ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima quis quas est dolor ratione, corrupti ex omnis reprehenderit perferendis, laborum repudiandae officiis. Quas voluptas ea repellendus ipsa sunt, quo voluptatum.
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="cursor-pointer col d-flex flex-row align-items-center justify-content-center">
-                                <img className="h-75 rounded" src="https://books.google.it/googlebooks/images/no_cover_thumb.gif"></img>
-                                <div className="d-flex justify-content-start flex-column mx-2 h-75 text-black">
-                                    <h1 className="mont fs-3">titolo</h1>
-                                    <p className="truncate-row ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima quis quas est dolor ratione, corrupti ex omnis reprehenderit perferendis, laborum repudiandae officiis. Quas voluptas ea repellendus ipsa sunt, quo voluptatum.
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="cursor-pointer col d-flex flex-row align-items-center justify-content-center">
-                                <img className="h-75 rounded" src="https://books.google.it/googlebooks/images/no_cover_thumb.gif"></img>
-                                <div className="d-flex justify-content-start flex-column mx-2 h-75 text-black">
-                                    <h1 className="mont fs-3">titolo</h1>
-                                    <p className="truncate-row ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima quis quas est dolor ratione, corrupti ex omnis reprehenderit perferendis, laborum repudiandae officiis. Quas voluptas ea repellendus ipsa sunt, quo voluptatum.
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="cursor-pointer col d-flex flex-row align-items-center justify-content-center">
-                                <img className="h-75 rounded" src="https://books.google.it/googlebooks/images/no_cover_thumb.gif"></img>
-                                <div className="d-flex justify-content-start flex-column mx-2 h-75 text-black">
-                                    <h1 className="mont fs-3">titolo</h1>
-                                    <p className="truncate-row ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima quis quas est dolor ratione, corrupti ex omnis reprehenderit perferendis, laborum repudiandae officiis. Quas voluptas ea repellendus ipsa sunt, quo voluptatum.
-                                    </p>
-                                </div>
-                            </div>
+                            {
+                                
+                                libriLista.map((libriLista)=>
+                                  <Card key={libriLista.id}
+                                  titolo={libriLista.titolo}
+                                  descrizione={libriLista.descrizione}
+                                  img={libriLista.img}
+                                  link={libriLista.link}
+                                  ></Card>
+
+                                  )
+                            }
                             <div className="cursor-pointer col d-flex justify-content-center align-items-center text-black ">
-                                <p className="block-card mont w-100 h-75 fs-5  d-flex justify-content-center align-items-center ">mostra altri 5 elementi (max 20)</p>
+                                <p className="block-card mont w-100 h-75 fs-5  d-flex justify-content-center align-items-center text-center ">mostra altri 5 elementi (max 20)</p>
                             </div>
                         </div>
                         <div className="d-flex w-50 justify-content-between align-items-center text-black">
-                         <a className="page-button rounded py-1 px-2 mont" href="">&laquo;</a>
-                         <a className="page-button rounded py-1 px-2 mont" href="">1</a>
-                         <a className="page-button rounded py-1 px-2 mont" href="">2</a>
-                         <a className="page-button rounded py-1 px-2 mont" href="">3</a>
-                         <a className="page-button rounded py-1 px-2 mont" href="">&raquo;</a>
+                            <a className="page-button rounded py-1 px-2 mont" href="">&laquo;</a>
+                            <a className="page-button rounded py-1 px-2 mont" href="">1</a>
+                            <a className="page-button rounded py-1 px-2 mont" href="">2</a>
+                            <a className="page-button rounded py-1 px-2 mont" href="">3</a>
+                            <a className="page-button rounded py-1 px-2 mont" href="">&raquo;</a>
                         </div>
                     </div>
                 </div>
