@@ -78,6 +78,8 @@ input {
 .block-card {
   background: #f1f1f1;
   border-radius: 15px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 .page-button {
@@ -87,6 +89,10 @@ input {
   opacity: .5;
   -webkit-transition: all .2s ease-out;
   transition: all .2s ease-out;
+}
+
+.min-height-30 {
+  min-height: 30%;
 }
 
 .page-button:hover {
