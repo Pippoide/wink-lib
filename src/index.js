@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 //
 import './style/index.css';
 //
-import App from './components/App';
+import App from './components/app';
 //
 import reportWebVitals from './reportWebVitals';
 //tutti gli svg sono presi da FontAwesome
