@@ -7,6 +7,14 @@
     background-repeat: no-repeat;
     background-image: url("./../image/libreria.jpg");
 }
+#bg-arrow {
+    width: 25px;
+    height: 30px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url("./../image/arrow.svg");
+}
 .box-lib-circle {
     width: 200%;
     height: 95vh;

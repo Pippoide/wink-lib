@@ -22,13 +22,13 @@ function App() {
             lib[0].style.animation = "CloseLib 1s 1 ease-out forwards";
             SetLibStato(false)
             //ora lib è chiuso
-            document.getElementById("arrow-ft").style.animation = "UpDirection 1s 1  ease-out forwards";
+            document.getElementById("bg-arrow").style.animation = "UpDirection 1s 1  ease-out forwards";
         }
         else {
             lib[0].style.animation = "OpenLib 1s 1 ease-out forwards";
             SetLibStato(true)
             //ora lib è aperto
-            document.getElementById("arrow-ft").style.animation = "BottomDirection 1s 1  ease-out forwards";
+            document.getElementById("bg-arrow").style.animation = "BottomDirection 1s 1  ease-out forwards";
         }
     }
 
@@ -193,7 +193,7 @@ function App() {
             </div>
             <div className="box-lib position-absolute position-relative d-flex flex-column justify-content-center align-items-center w-100">
                 <div onClick={() => ActionLib()} className="box-lib-button rounded-pill d-flex justify-content-center align-items- position-relative">
-                    <img src=".././image/arrow.svg"></img>
+                    <div id="bg-arrow"></div>
                 </div>
                 <div className="box-lib-circle d-flex justify-content-center align-items-center">
                     <div className="w-100 h-100 d-flex justify-content-between align-items-center flex-column">
