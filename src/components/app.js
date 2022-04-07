@@ -3,7 +3,6 @@ import { Component, useEffect } from "react";
 import Card from "./Card";
 import Axios from "axios";
 import React, { useState } from 'react';
-import { act } from "react-dom/test-utils";
 
 
 function App() {
@@ -14,7 +13,7 @@ function App() {
     const [bloccoLista, SetBloccoLista] = useState(5)
     const [paginazione, SetPaginazione] = useState(1)
     const [direzioneBlocco, SetDirezioneBlocco] = useState(true) //true = aumenta il blocco di libri | false = diminuisce il blocco di libri
-    const [maxRisultatiLibri, SetMaxRisultatiLibri]=useState(0)
+    const [maxRisultatiLibri, SetMaxRisultatiLibri] = useState(5)
     //apertura della lista di libri della ricerca
     function ActionLib() {
         // console.log(libStato)
@@ -34,11 +33,12 @@ function App() {
     }
 
     function SearchBook(ricerca) {
-        Axios.get("https://www.googleapis.com/books/v1/volumes?q=" + ricerca + "&key=" + process.env.REACT_APP_API_KEY_BOOK + "&startIndex=" + indiceLista + "&maxResults=40").then(response => {
+        console.log(ricerca)
+        Axios.get("https://www.googleapis.com/books/v1/volumes?q=" + ricerca + "&key=" + process.env.REACT_APP_API_KEY_BOOK + "&startIndex=" + indiceLista + "&maxResults=" + maxRisultatiLibri).then(response => {
             var descrizione;
             var imgBook;
             var libriListaTemporanea = [];
-            for (var i = indiceLista; i < bloccoLista; i++) {
+            for (var i = 0; i < bloccoLista; i++) {
                 if (response.data.items[i].volumeInfo.description == undefined) {
                     descrizione = "Descrizione non disponibile";
                 }
@@ -62,6 +62,11 @@ function App() {
                 libriListaTemporanea.push(book)
             }
             SetLibriLista(libriListaTemporanea)
+            const pageButton = document.getElementsByClassName("page-button")
+            for (i = 0; i < pageButton.length; i++) {
+                pageButton[i].style.opacity = "0.5"
+            }
+            pageButton[paginazione].style.opacity = "1"
         }
         )
     }
@@ -82,33 +87,36 @@ function App() {
             }
         }
     }
-
     //al cambiamento del blocco c'p l'aggiornamento della libreria
     useEffect(() => {
+        IndexLimitSearch()
         const input = document.getElementsByClassName("input-search");
         var ricerca = input[0].value;
         SearchBook(ricerca)
     }, [bloccoLista])
 
     function Paginazione(action) {
+        var maxPage
+        if (bloccoLista == 15) {
+            maxPage = 3; //Math.floor(returna 2 e non 3)
+        }
+        else {
+            maxPage = 40 / bloccoLista
+        }
         switch (action) {
             //true -> andare avanti
             case true:
-                if (paginazione + 1 <= 3) {
-                    const x = paginazione + 1
-                    SetPaginazione(x)
+                if (paginazione + 1 <= maxPage) {
+                    SetPaginazione((paginazione + 1))
                 }
                 else {
-                    if (bloccoLista != 5) {
-                        global.alert("Ultimi risultati")
-                    }
+                    global.alert("Ultimi risultati")
                 }
                 break;
             //false -> andare indietro
             case false:
                 if (paginazione - 1 > 0) {
-                    const x = paginazione - 1
-                    SetPaginazione(x)
+                    SetPaginazione((paginazione - 1))
                 }
                 else {
                     global.alert("Questi sono i primi risultati")
@@ -121,17 +129,53 @@ function App() {
                 SetPaginazione(2)
                 break
             case 3:
-                SetPaginazione(3)
+                if (bloccoLista == 20) {
+                    SetPaginazione(2)
+                }
+                else {
+                    SetPaginazione(3)
+
+                }
                 break;
         }
-        indiceListaSet()
     }
 
-    function indiceListaSet() {
-        var maxRisultati = bloccoLista * paginazione;
-        var indiceLista = maxRisultati - bloccoLista;
-        SetIndiceLista(indiceLista)
+    useEffect(() => {
+        IndexLimitSearch()
+    }, [paginazione])
+
+    function IndexLimitSearch() {
+        if ((bloccoLista * paginazione) > 40 && bloccoLista == 20) {
+            SetPaginazione(2)
+        }
+        var maxResults = bloccoLista * paginazione
+        if (maxResults > 40) {
+            maxResults = 40
+        }
+        var index = ((bloccoLista * paginazione) - bloccoLista)
+        if (index > 25) {
+            index = 25
+        }
+        SetIndiceLista(index)
+        SetMaxRisultatiLibri(maxResults)
     }
+
+    function MaxResultsSearch() {
+        var maxResults = bloccoLista * paginazione
+        console.log(maxResults + " - " + paginazione + "." + bloccoLista)
+        if (maxResults > 40) {
+            maxResults = 40
+        }
+        SetMaxRisultatiLibri(maxResults)
+        return (maxResults)
+    }
+
+    useEffect(() => {
+        const input = document.getElementsByClassName("input-search");
+        var ricerca = input[0].value;
+        SearchBook(ricerca)
+    }, [maxRisultatiLibri])
+
     return (
         <div className=" position-relative w-100 d-flex flex-column align-items-center bg-image text-white vh-100">
             <div className="d-flex flex-column justify-content-center align-items-center w-75 p-6" style={{ height: "80vh" }}>
@@ -165,11 +209,11 @@ function App() {
                             </div>
                         </div>
                         <div className="d-flex w-50 justify-content-between align-items-center text-black">
-                            <a onClick={() => Paginazione(false)} className="page-button rounded py-1 px-2 mont" >&laquo;</a>
-                            <a onClick={() => Paginazione(1)} className="page-button rounded py-1 px-2 mont" >1</a>
-                            <a onClick={() => Paginazione(2)} className="page-button rounded py-1 px-2 mont" >2</a>
-                            <a onClick={() => Paginazione(3)} className="page-button rounded py-1 px-2 mont" >3</a>
-                            <a onClick={() => Paginazione(true)} className="page-button rounded py-1 px-2 mont" >&raquo;</a>
+                            <a onClick={() => Paginazione(false)} className="page-button rounded py-1 px-2 cursor-pointer mont" >&laquo;</a>
+                            <a onClick={() => Paginazione(1)} className="page-button rounded py-1 px-2 mont cursor-pointer " >1</a>
+                            <a onClick={() => Paginazione(2)} className="page-button rounded py-1 px-2 mont cursor-pointer " >2</a>
+                            <a onClick={() => Paginazione(3)} className="page-button rounded py-1 px-2 mont cursor-pointer " >3</a>
+                            <a onClick={() => Paginazione(true)} className="page-button rounded py-1 px-2 mont cursor-pointer" >&raquo;</a>
                         </div>
                     </div>
                 </div>
