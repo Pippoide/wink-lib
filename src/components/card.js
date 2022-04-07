@@ -1,5 +1,4 @@
-import { render } from "@testing-library/react";
-import { Component } from "react";
+
 function Card(props) {
     return(
         <a href ={props.link} target="_blank" className="min-height-30 decoration-none cursor-pointer col d-flex flex-row align-items-center justify-content-start">

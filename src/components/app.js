@@ -62,13 +62,17 @@ function App() {
                 libriListaTemporanea.push(book)
             }
             SetLibriLista(libriListaTemporanea)
-            const pageButton = document.getElementsByClassName("page-button")
-            for (i = 0; i < pageButton.length; i++) {
-                pageButton[i].style.opacity = "0.5"
-            }
-            pageButton[paginazione].style.opacity = "1"
+            PageButtonIndex()
         }
         )
+    }
+
+    function PageButtonIndex(){
+        const pageButton = document.getElementsByClassName("page-button")
+        for (var i = 0; i < pageButton.length; i++) {
+            pageButton[i].style.opacity = "0.5"
+        }
+        pageButton[paginazione].style.opacity = "1"
     }
 
     function BloccoLista() {
@@ -92,7 +96,9 @@ function App() {
         IndexLimitSearch()
         const input = document.getElementsByClassName("input-search");
         var ricerca = input[0].value;
+        PageButtonIndex()
         SearchBook(ricerca)
+       
     }, [bloccoLista])
 
     function Paginazione(action) {
@@ -159,7 +165,7 @@ function App() {
         SetIndiceLista(index)
         SetMaxRisultatiLibri(maxResults)
     }
-
+    /*
     function MaxResultsSearch() {
         var maxResults = bloccoLista * paginazione
         console.log(maxResults + " - " + paginazione + "." + bloccoLista)
@@ -169,6 +175,7 @@ function App() {
         SetMaxRisultatiLibri(maxResults)
         return (maxResults)
     }
+    */
 
     useEffect(() => {
         const input = document.getElementsByClassName("input-search");
@@ -186,9 +193,7 @@ function App() {
             </div>
             <div className="box-lib position-absolute position-relative d-flex flex-column justify-content-center align-items-center w-100">
                 <div onClick={() => ActionLib()} className="box-lib-button rounded-pill d-flex justify-content-center align-items- position-relative">
-                    <svg id="arrow-ft" xmlns="http://www.w3.org/2000/svg" width="20" height="25" viewBox="0 0 37.536 21.895">
-                        <path id="angle-down-solid" d="M18.772,181.9a3.115,3.115,0,0,1-2.211-.916L.921,165.339a3.128,3.128,0,1,1,4.423-4.423l13.427,13.433,13.43-13.43a3.128,3.128,0,0,1,4.423,4.423L20.986,180.981A3.119,3.119,0,0,1,18.772,181.9Z" transform="translate(37.541 181.895) rotate(180)" opacity="0.5" />
-                    </svg>
+                    <img src=".././image/arrow.svg"></img>
                 </div>
                 <div className="box-lib-circle d-flex justify-content-center align-items-center">
                     <div className="w-100 h-100 d-flex justify-content-between align-items-center flex-column">
