@@ -3,6 +3,7 @@ import { Component, useEffect } from "react";
 import Card from "./Card";
 import Axios from "axios";
 import React, { useState } from 'react';
+import { act } from "react-dom/test-utils";
 
 
 function App() {
@@ -11,9 +12,9 @@ function App() {
     const [libriLista, SetLibriLista] = useState([{}])
     const [indiceLista, SetIndiceLista] = useState(0)
     const [bloccoLista, SetBloccoLista] = useState(5)
-    const [paginazione, SetPaginazione] = useState(0)
+    const [paginazione, SetPaginazione] = useState(1)
     const [direzioneBlocco, SetDirezioneBlocco] = useState(true) //true = aumenta il blocco di libri | false = diminuisce il blocco di libri
-    
+    const [maxRisultatiLibri, SetMaxRisultatiLibri]=useState(0)
     //apertura della lista di libri della ricerca
     function ActionLib() {
         // console.log(libStato)
@@ -33,12 +34,11 @@ function App() {
     }
 
     function SearchBook(ricerca) {
-       
-        Axios.get("https://www.googleapis.com/books/v1/volumes?q=" + ricerca + "&key=" + process.env.REACT_APP_API_KEY_BOOK + "&startIndex=0" + "&maxResults=40").then(response => {
+        Axios.get("https://www.googleapis.com/books/v1/volumes?q=" + ricerca + "&key=" + process.env.REACT_APP_API_KEY_BOOK + "&startIndex=" + indiceLista + "&maxResults=40").then(response => {
             var descrizione;
             var imgBook;
             var libriListaTemporanea = [];
-            for (var i = 0; i < bloccoLista; i++) {
+            for (var i = indiceLista; i < bloccoLista; i++) {
                 if (response.data.items[i].volumeInfo.description == undefined) {
                     descrizione = "Descrizione non disponibile";
                 }
@@ -82,14 +82,56 @@ function App() {
             }
         }
     }
-    
+
     //al cambiamento del blocco c'p l'aggiornamento della libreria
-    useEffect(()=>{
+    useEffect(() => {
         const input = document.getElementsByClassName("input-search");
         var ricerca = input[0].value;
         SearchBook(ricerca)
-    },[bloccoLista])
+    }, [bloccoLista])
 
+    function Paginazione(action) {
+        switch (action) {
+            //true -> andare avanti
+            case true:
+                if (paginazione + 1 <= 3) {
+                    const x = paginazione + 1
+                    SetPaginazione(x)
+                }
+                else {
+                    if (bloccoLista != 5) {
+                        global.alert("Ultimi risultati")
+                    }
+                }
+                break;
+            //false -> andare indietro
+            case false:
+                if (paginazione - 1 > 0) {
+                    const x = paginazione - 1
+                    SetPaginazione(x)
+                }
+                else {
+                    global.alert("Questi sono i primi risultati")
+                }
+                break;
+            case 1:
+                SetPaginazione(1)
+                break;
+            case 2:
+                SetPaginazione(2)
+                break
+            case 3:
+                SetPaginazione(3)
+                break;
+        }
+        indiceListaSet()
+    }
+
+    function indiceListaSet() {
+        var maxRisultati = bloccoLista * paginazione;
+        var indiceLista = maxRisultati - bloccoLista;
+        SetIndiceLista(indiceLista)
+    }
     return (
         <div className=" position-relative w-100 d-flex flex-column align-items-center bg-image text-white vh-100">
             <div className="d-flex flex-column justify-content-center align-items-center w-75 p-6" style={{ height: "80vh" }}>
@@ -109,26 +151,25 @@ function App() {
                         <div className="block-book row row-cols-1 row-cols-md-2 w-100 m-0 p-0">
                             {
                                 libriLista.length >= 5 ?
-                                libriLista.map((libriLista) =>
-                                    <Card key={libriLista.id}
-                                        titolo={libriLista.titolo}
-                                        descrizione={libriLista.descrizione}
-                                        img={libriLista.img}
-                                        link={libriLista.link}
-                                    ></Card>
-                                ): ""
-                            
+                                    libriLista.map((libriLista) =>
+                                        <Card key={libriLista.id}
+                                            titolo={libriLista.titolo}
+                                            descrizione={libriLista.descrizione}
+                                            img={libriLista.img}
+                                            link={libriLista.link}
+                                        ></Card>
+                                    ) : ""
                             }
                             <div className="min-height-30 cursor-pointer col d-flex justify-content-center align-items-center text-black ">
                                 <p onClick={() => BloccoLista()} className="block-card mont w-100 h-75 fs-5 p-1 d-flex justify-content-center align-items-center text-center ">{direzioneBlocco ? "+" : "-"}5 elementi (max 20 | blocco {bloccoLista})</p>
                             </div>
                         </div>
                         <div className="d-flex w-50 justify-content-between align-items-center text-black">
-                            <a className="page-button rounded py-1 px-2 mont" href="">&laquo;</a>
-                            <a className="page-button rounded py-1 px-2 mont" href="">1</a>
-                            <a className="page-button rounded py-1 px-2 mont" href="">2</a>
-                            <a className="page-button rounded py-1 px-2 mont" href="">3</a>
-                            <a className="page-button rounded py-1 px-2 mont" href="">&raquo;</a>
+                            <a onClick={() => Paginazione(false)} className="page-button rounded py-1 px-2 mont" >&laquo;</a>
+                            <a onClick={() => Paginazione(1)} className="page-button rounded py-1 px-2 mont" >1</a>
+                            <a onClick={() => Paginazione(2)} className="page-button rounded py-1 px-2 mont" >2</a>
+                            <a onClick={() => Paginazione(3)} className="page-button rounded py-1 px-2 mont" >3</a>
+                            <a onClick={() => Paginazione(true)} className="page-button rounded py-1 px-2 mont" >&raquo;</a>
                         </div>
                     </div>
                 </div>
@@ -136,4 +177,4 @@ function App() {
         </div>
     );
 }
-export default App
+export default App;
