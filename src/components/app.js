@@ -33,7 +33,7 @@ function App() {
     }
 
     function SearchBook(ricerca) {
-        console.log(ricerca)
+        //console.log(ricerca)
         Axios.get("https://www.googleapis.com/books/v1/volumes?q=" + ricerca + "&key=" + process.env.REACT_APP_API_KEY_BOOK + "&startIndex=" + indiceLista + "&maxResults=" + maxRisultatiLibri).then(response => {
             var descrizione;
             var imgBook;
