@@ -44,6 +44,7 @@ input {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   padding: 15vh 60% 5vh 60%;
+  overflow: hidden;
 }
 
 .truncate-row {
@@ -60,6 +61,7 @@ input {
 
 .box-lib {
   bottom: -80vh;
+  overflow: hidden;
 }
 
 .box-lib-button {
@@ -82,6 +84,7 @@ input {
 .block-book {
   height: 90%;
   overflow-y: auto !important;
+  overflow-x: hidden !important;
 }
 
 .block-card {

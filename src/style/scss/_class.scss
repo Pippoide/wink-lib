@@ -22,6 +22,7 @@
     background-color: white;
     box-sizing: border-box;
     padding: 15vh 60% 5vh 60%;
+    overflow: hidden;
 }
 .truncate-row {
     overflow: hidden;
@@ -35,6 +36,7 @@
 }
 .box-lib {
     bottom: -80vh;
+    overflow: hidden;
 }
 .box-lib-button {
     bottom: -1rem !important;
@@ -52,6 +54,7 @@
 .block-book {
     height: 90%;
     overflow-y: auto !important;
+    overflow-x: hidden !important;
 }
 .block-card {
     background: #f1f1f1;

@@ -90,6 +90,7 @@ function App() {
                 SetDirezioneBlocco(true)
             }
         }
+        PageButtonIndex()
     }
     //al cambiamento del blocco c'p l'aggiornamento della libreria
     useEffect(() => {
