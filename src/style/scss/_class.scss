@@ -120,3 +120,8 @@
         transform: rotate(-180deg);
     }
 }
+@media screen and (max-width:400px) {
+    .box-lib-circle{
+        padding: 10vh 60%;
+    }
+}
