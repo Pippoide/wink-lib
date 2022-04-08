@@ -67,12 +67,17 @@ function App() {
         )
     }
 
-    function PageButtonIndex(){
+    function PageButtonIndex() {
         const pageButton = document.getElementsByClassName("page-button")
         for (var i = 0; i < pageButton.length; i++) {
             pageButton[i].style.opacity = "0.5"
         }
-        pageButton[paginazione].style.opacity = "1"
+        if (paginazione > 3) {
+            pageButton[4].style.opacity = "1"
+        }
+        else {
+            pageButton[paginazione].style.opacity = "1"
+        }
     }
 
     function BloccoLista() {
@@ -99,7 +104,7 @@ function App() {
         var ricerca = input[0].value;
         PageButtonIndex()
         SearchBook(ricerca)
-       
+
     }, [bloccoLista])
 
     function Paginazione(action) {
